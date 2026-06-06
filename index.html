@@ -1,1 +1,140 @@
-hello word!
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指路牌</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 手绘涂鸦风格核心样式 */
+        .doodle-sign {
+            background: var(--bg-color, #fff9e6);
+            border: 3px solid var(--border-color, #333);
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            box-shadow: 4px 4px 0 var(--shadow-color, #333);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .doodle-sign:hover {
+            transform: rotate(var(--hover-rotate, 1deg)) translateY(-2px);
+            box-shadow: 6px 6px 0 var(--shadow-color, #333);
+        }
+
+        .doodle-sign:active {
+            transform: rotate(0deg) translateY(0);
+            box-shadow: 2px 2px 0 var(--shadow-color, #333);
+        }
+
+        /* 手绘图钉装饰 */
+        .doodle-sign::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            width: 12px;
+            height: 12px;
+            background: var(--pin-color, #e74c3c);
+            border-radius: 50%;
+            border: 2px solid var(--border-color, #333);
+        }
+
+        .doodle-sign::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: var(--pin-color, #e74c3c);
+            border-radius: 50%;
+            border: 2px solid var(--border-color, #333);
+        }
+
+        /* 纸张纹理背景 */
+        .paper-bg {
+            background-color: #f8f5e6;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, #e8e4d5 79px, #e8e4d5 81px, transparent 81px),
+                linear-gradient(#e8e4d5 1px, transparent 1px);
+            background-size: 100% 25px;
+        }
+    </style>
+</head>
+<body class="min-h-screen paper-bg py-16 px-4 flex flex-col items-center justify-center">
+    <h1 id="page-title" class="text-4xl font-bold mb-12 text-gray-800" style="font-family: 'Comic Sans MS', cursive;"></h1>
+    
+    <!-- 指路牌容器 -->
+    <div id="doodle-navigation" class="flex justify-center gap-8 flex-wrap">
+        <!-- 路牌会通过JavaScript动态生成 -->
+    </div>
+
+    <script>
+        // ==========================================
+        // 🔧 唯一配置区 - 只需要修改这里即可
+        // ==========================================
+        const config = {
+            // 页面大标题
+            pageTitle: "指路牌",
+            
+            // 指路牌列表（标题+链接）
+            links: [
+                { title: "关于我", link: "#about" },
+                { title: "项目墙", link: "https://dihe-github.github.io/project-wall" },
+                { title: "简历", link: "#resume" }
+                // 新增路牌直接在这里加一行即可
+                // { title: "博客", link: "https://your-blog.com" },
+                // { title: "GitHub", link: "https://github.com/yourname" },
+            ],
+
+            // 全局样式（可选修改，不改也能正常用）
+            style: {
+                backgroundColor: "#fff9e6",
+                borderColor: "#333333",
+                shadowColor: "#333333",
+                pinColor: "#e74c3c",
+                textColor: "#333333",
+                hoverRotate: "1deg",
+                fontSize: "1.25rem",
+                paddingX: "2rem",
+                paddingY: "1rem"
+            }
+        };
+
+        // ==========================================
+        // 生成代码（无需修改）
+        // ==========================================
+        function generateNavigation() {
+            // 设置页面标题
+            document.getElementById('page-title').textContent = config.pageTitle;
+            
+            // 生成指路牌
+            const container = document.getElementById('doodle-navigation');
+            container.innerHTML = '';
+
+            config.links.forEach(item => {
+                const sign = document.createElement('a');
+                sign.href = item.link;
+                sign.className = 'doodle-sign';
+                sign.textContent = item.title;
+
+                // 应用全局样式
+                sign.style.setProperty('--bg-color', config.style.backgroundColor);
+                sign.style.setProperty('--border-color', config.style.borderColor);
+                sign.style.setProperty('--shadow-color', config.style.shadowColor);
+                sign.style.setProperty('--pin-color', config.style.pinColor);
+                sign.style.setProperty('--hover-rotate', config.style.hoverRotate);
+                sign.style.color = config.style.textColor;
+                sign.style.fontSize = config.style.fontSize;
+                sign.style.padding = `${config.style.paddingY} ${config.style.paddingX}`;
+
+                container.appendChild(sign);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', generateNavigation);
+    </script>
+</body>
+</html>
